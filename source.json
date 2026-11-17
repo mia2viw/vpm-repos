@@ -1,0 +1,17 @@
+{
+  "name": "VIWTools Packages",
+  "id": "net.vviw.vpm-repos",
+  "author": {
+    "name": "VIWTools",
+    "url": "https://github.com/mia2viw"
+  },
+  "infoLink": {
+    "url": "https://github.com/mia2viw/vpm-repos",
+    "text": "View on GitHub"
+  },
+  "url": "https://mia2viw.github.io/vpm-repos/index.json",
+  "githubRepos": [
+    "mia2viw/net.vviw.scene-changer"
+  ],
+  "packages": []
+}

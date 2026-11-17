@@ -1,0 +1,45 @@
+name: Build Repo Listing
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [build-listing]
+  push:
+    branches: [main]
+    paths: [source.json, scripts/**, tests/**, .github/workflows/build-listing.yml]
+  schedule:
+    - cron: '7,22,37,52 * * * *'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build-listing:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Test listing generation
+        run: python3 -m unittest discover -s tests -v
+      - name: Build and validate multi-package listing
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/build_listing.py
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: Website
+      - name: Deploy listing
+        id: deployment
+        uses: actions/deploy-pages@v4
